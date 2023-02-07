@@ -1,14 +1,18 @@
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
-const express = require("express");
-const XLSX = require("xlsx");
-const fs = require("fs");
-const excel4node = require("excel4node");
-const dbMysql = require("../src/config/dbMysql");
-const dbMssql = require("../src/config/dbMssql");
-const app = express();
+const path = require("path")
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") })
+const express = require("express")
+const XLSX = require("xlsx")
+const fs = require("fs")
+const bodyParser = require("body-parser")
+const excel4node = require("excel4node")
+const dbMysql = require("../src/config/dbMysql")
+const dbMssql = require("../src/config/dbMssql")
 
-app.use(express.json());
+const app = express()
+
+app.use(bodyParser.json())
+app.use(cors())
+app.use(express.json())
 
 app.post("/convert-to-excel", (req, res) => {
   const data = req.body;
@@ -28,7 +32,7 @@ app.post("/convert-to-excel", (req, res) => {
       res.status(500).send("Error sending Excel file");
     }
   });
-});
+})
 
 app.post("/download", async (req, res) => {
   const data = req.body
@@ -70,11 +74,11 @@ app.post("/download", async (req, res) => {
   //   console.log(resultSQL);
   // };
   // testJsonToXlsx();
-});
+})
 
 app.get("/", (req, res) => {
   res.json("Server DataSql to Excel");
-});
+})
 app.listen(process.env.PORT, () => {
   console.log(`Server 2 listening at http://localhost:${process.env.PORT}`);
-});
+})
